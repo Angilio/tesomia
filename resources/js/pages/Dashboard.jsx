@@ -1,0 +1,26 @@
+import Layout from '@/Layouts/Layout';
+import { Head } from '@inertiajs/react';
+
+export default function Dashboard() {
+    return (
+        <Layout
+            header={
+                <h2 className="text-xl font-semibold leading-tight">
+                    Dashboard
+                </h2>
+            }
+        >
+            <Head title="Dashboard" />
+
+            <div className="py-12">
+                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    <div className="overflow-hidden shadow-sm sm:rounded-lg">
+                        <div className="p-6 ">
+                            Bonjour! Bienvenu dans le plateforme AEOAA.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Layout>
+    );
+}
