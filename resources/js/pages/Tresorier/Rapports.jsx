@@ -263,8 +263,8 @@ export default function Rapports({
                             <table className="table min-w-[850px]">
                                 <thead>
                                     <tr className="bg-base-200 text-base-content/70">
-                                        <th className="w-[28%]">Logement</th>
-                                        <th className="w-[42%]">Membres qui y demeurent</th>
+                                        <th className="w-[28%]">Logements</th>
+                                        <th className="w-[42%]">Membres</th>
                                         <th className="w-[30%]">Statut du droit annuel</th>
                                     </tr>
                                 </thead>
@@ -314,8 +314,8 @@ export default function Rapports({
                                                                 className="flex items-center gap-3 rounded-2xl bg-base-200/60 px-3 py-2"
                                                             >
                                                                 <div className="avatar placeholder">
-                                                                    <div className="w-9 rounded-full bg-warning/20 text-warning">
-                                                                        <span className="text-xs font-black">
+                                                                    <div className="w-9 h-9 rounded-full bg-warning/20 text-warning flex items-center justify-center">
+                                                                        <span className="text-xs font-black leading-none">
                                                                             {membre.name?.charAt(0)?.toUpperCase() || 'M'}
                                                                         </span>
                                                                     </div>
@@ -327,7 +327,7 @@ export default function Rapports({
                                                                     </p>
 
                                                                     <p className="text-xs text-base-content/60">
-                                                                        Membre SAVA-U
+                                                                        Membre TESOMIA
                                                                     </p>
                                                                 </div>
                                                             </div>
