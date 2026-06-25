@@ -112,21 +112,29 @@ class AttributionController extends Controller
     }
 
     public function exportPdf()
-{
-    $attributions = Attribution::with(['user.roles', 'logement'])
-        ->orderBy('date_debut', 'desc')
-        ->get();
+    {
+        $attributions = Attribution::with(['user.roles', 'logement'])
+            ->orderBy('logement_id')
+            ->orderBy('date_debut', 'desc')
+            ->get();
 
-    $total = $attributions->count();
+        $total = $attributions->count();
 
-    $pdf = Pdf::loadView('attributions.pdf', [
-        'attributions' => $attributions,
-        'total' => $total,
-        'dateExport' => now()->format('d/m/Y H:i'),
-    ])
-    ->setPaper('A4', 'portrait');
+        $dateExport = now()->format('d/m/Y à H:i');
 
-    return $pdf->download('liste_attributions_' . now()->format('Ymd_His') . '.pdf');
-}
+        $pdf = Pdf::loadView('attributions.pdf', [
+            'attributions' => $attributions,
+            'total' => $total,
+            'dateExport' => $dateExport,
+        ])
+            ->setPaper('A4', 'landscape')
+            ->setOptions([
+                'defaultFont' => 'DejaVu Sans',
+                'isHtml5ParserEnabled' => true,
+                'isRemoteEnabled' => true,
+            ]);
+
+        return $pdf->stream('liste_attributions_' . now()->format('Ymd_His') . '.pdf');
+    }
 
 }

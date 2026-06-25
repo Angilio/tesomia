@@ -88,6 +88,9 @@ Route::middleware(['auth', 'role:Commission de logement'])->group(function () {
     Route::get('logements/dashboard', [AttributionController::class, 'dashboard'])
         ->name('dashboard.logements');
 
+    Route::get('attributions/export-pdf', [AttributionController::class, 'exportPdf'])
+        ->name('attributions.export.pdf');
+
     Route::resource('logements', LogementController::class);
 
     // Routes pour les attributions
@@ -98,9 +101,6 @@ Route::middleware(['auth', 'role:Commission de logement'])->group(function () {
     Route::put('attributions/{attribution}', [AttributionController::class, 'update'])->name('attributions.update');
     Route::delete('attributions/{attribution}', [AttributionController::class, 'destroy'])->name('attributions.destroy');
 
-    //Route::get('attributions-export/pdf', [AttributionController::class, 'exportPdf'])->name('attributions.export.pdf');
-    Route::get('attributions/export-pdf', [AttributionController::class, 'exportPdf'])
-     ->name('attributions.export.pdf');
 });
 
 
