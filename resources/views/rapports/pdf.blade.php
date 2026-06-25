@@ -48,6 +48,17 @@
             color: #166534;
         }
 
+        .filter-label {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 4px 8px;
+            border-radius: 10px;
+            background-color: #dcfce7;
+            color: #166534;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -78,8 +89,28 @@
             word-wrap: break-word;
         }
 
-        tbody tr:nth-child(even) {
-            background-color: #f9fafb;
+        .logement-cell {
+            background-color: #f0fdf4;
+            color: #166534;
+            font-weight: bold;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .logement-non-attribue {
+            background-color: #fef2f2;
+            color: #991b1b;
+        }
+
+        .member-name {
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .member-subtitle {
+            margin-top: 2px;
+            font-size: 10px;
+            color: #6b7280;
         }
 
         .text-center {
@@ -129,37 +160,112 @@
 
 <body>
 
+    @php
+        /*
+            Ce bloc rend le PDF compatible avec deux cas :
+            1. Si le contrôleur envoie déjà $groupes.
+            2. Si le contrôleur envoie seulement $membres.
+        */
+        if (!isset($groupes)) {
+            $groupes = collect($membres ?? [])
+                ->groupBy(function ($membre) {
+                    return data_get($membre, 'logement')
+                        ?? data_get($membre, 'adresse')
+                        ?? 'Non attribué';
+                })
+                ->map(function ($items, $logement) {
+                    return [
+                        'logement' => $logement,
+                        'membres' => $items->values(),
+                    ];
+                })
+                ->values();
+        }
+
+        $totalPayes = collect($membres ?? [])
+            ->filter(fn ($membre) => data_get($membre, 'paye') == true)
+            ->count();
+
+        $totalNonPayes = collect($membres ?? [])->count() - $totalPayes;
+
+        $filtreLabel = match($filtre ?? 'tous') {
+            'actifs' => 'Membres ayant payé',
+            'non_actifs' => 'Membres non payés',
+            default => 'Tous les membres',
+        };
+    @endphp
+
     <div class="header">
         <h2>Rapport des Droits Annuels</h2>
         <p>Document généré le {{ now()->format('d/m/Y à H:i') }}</p>
     </div>
 
     <div class="summary">
-        <strong>Total des membres :</strong> {{ $totalMembres }}
+        <strong>Total des membres :</strong> {{ $totalMembres ?? collect($membres ?? [])->count() }}
+        &nbsp; | &nbsp;
+        <strong>Payés :</strong> {{ $totalPayes }}
+        &nbsp; | &nbsp;
+        <strong>Non payés :</strong> {{ $totalNonPayes }}
+
+        <br>
+
+        <span class="filter-label">
+            Filtre : {{ $filtreLabel }}
+        </span>
     </div>
 
     <table>
         <thead>
             <tr>
-                <th style="width: 35%;">Nom du membre</th>
-                <th style="width: 45%;">Adresse</th>
-                <th style="width: 20%;">Statut paiement</th>
+                <th style="width: 30%;">Logement</th>
+                <th style="width: 45%;">Membres qui y demeurent</th>
+                <th style="width: 25%;">Statut paiement</th>
             </tr>
         </thead>
 
         <tbody>
-            @forelse($membres as $membre)
-                <tr>
-                    <td>{{ $membre['name'] ?? '-' }}</td>
-                    <td>{{ $membre['adresse'] ?? '-' }}</td>
-                    <td class="text-center">
-                        @if($membre['paye'])
-                            <span class="paye">Payé</span>
-                        @else
-                            <span class="non-paye">Non payé</span>
+            @forelse($groupes as $groupe)
+                @php
+                    $logement = data_get($groupe, 'logement', 'Non attribué');
+                    $membresDuLogement = collect(data_get($groupe, 'membres', []));
+                    $rowspan = max($membresDuLogement->count(), 1);
+                @endphp
+
+                @foreach($membresDuLogement as $membre)
+                    <tr>
+                        @if($loop->first)
+                            <td
+                                rowspan="{{ $rowspan }}"
+                                class="logement-cell {{ $logement === 'Non attribué' ? 'logement-non-attribue' : '' }}"
+                            >
+                                {{ $logement }}
+                                <br>
+                                <small>
+                                    {{ $membresDuLogement->count() }} membre(s)
+                                </small>
+                            </td>
                         @endif
-                    </td>
-                </tr>
+
+                        <td>
+                            <div class="member-name">
+                                {{ data_get($membre, 'name', '-') }}
+                            </div>
+
+                            <div class="member-subtitle">
+                                Membre TESOMIA
+                            </div>
+                        </td>
+
+                        <td class="text-center">
+                            @if(data_get($membre, 'paye') == true)
+                                <span class="paye">Payé</span>
+                            @else
+                                <span class="non-paye">Non payé</span>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+
             @empty
                 <tr>
                     <td colspan="3" class="empty">

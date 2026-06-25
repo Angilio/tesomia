@@ -86,7 +86,7 @@ export default function Welcome({ auth }) {
 
                         <div className="max-w-3xl">
 
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-md border border-white/20 mb-6">
+                            <div className="inline-flex items-center gap-2 px-2 rounded-full bg-white/15 backdrop-blue-md border border-white/20 mb-6">
                                 <ShieldCheck className="w-4 h-4" />
 
                                 <span className="text-sm font-semibold">
@@ -94,7 +94,7 @@ export default function Welcome({ auth }) {
                                 </span>
                             </div>
 
-                            <h1 className="text-4xl md:text-6xl font-black leading-tight tracking-tight">
+                            <h1 className="text-2xl md:text-3xl font-black leading-tight tracking-tight">
                                 <span className="text-yellow-300">TE</span>raka{' '}
                                 <span className="text-yellow-300">SO</span>fia{' '}
                                 <span className="text-yellow-300">MI</span>anatra{' '}
