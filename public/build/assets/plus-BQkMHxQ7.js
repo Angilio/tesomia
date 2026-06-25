@@ -1,1 +1,0 @@
-import{c as o}from"./sun-iv-5slG3.js";const e=[["path",{d:"m15 18-6-6 6-6",key:"1wnfg3"}]],h=o("chevron-left",e);const t=[["path",{d:"m9 18 6-6-6-6",key:"mthhwq"}]],s=o("chevron-right",t);const c=[["path",{d:"M5 12h14",key:"1ays0h"}],["path",{d:"M12 5v14",key:"s699le"}]],a=o("plus",c);export{h as C,a as P,s as a};
