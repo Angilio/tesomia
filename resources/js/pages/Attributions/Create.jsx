@@ -65,7 +65,7 @@ export default function Create({ users = [], logements = [] }) {
 
     const addAttribution = () => {
         if (!selectedLogement || selectedUsers.length === 0 || !dateDebut) {
-            alert('Veuillez sélectionner au moins un membre, un logement et une date de début.');
+            alert('Veuillez sélectionner au moins un étudiant, un logement et une date de début.');
             return;
         }
 
@@ -132,7 +132,7 @@ export default function Create({ users = [], logements = [] }) {
                                     Attribution des logements
                                 </h2>
                                 <p className="text-sm text-base-content/60">
-                                    Attribuez un ou plusieurs membres à un logement
+                                    Attribuez un ou plusieurs étudiants à un logement
                                 </p>
                             </div>
                         </div>
@@ -150,7 +150,7 @@ export default function Create({ users = [], logements = [] }) {
         >
             <Head title="Attribuer un logement" />
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6" noValidate>
                 <section className="overflow-hidden rounded-[2rem] border border-base-300 bg-base-100 shadow-sm">
                     <div className="relative bg-gradient-to-br from-primary via-secondary to-primary p-6 text-primary-content md:p-8">
                         <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
@@ -168,14 +168,14 @@ export default function Create({ users = [], logements = [] }) {
                                 </h1>
 
                                 <p className="mt-3 max-w-xl text-sm leading-6 text-white/80 md:text-base">
-                                    Sélectionnez les membres, choisissez un logement,
+                                    Sélectionnez les étudiants, choisissez un logement,
                                     indiquez la période d’attribution, puis ajoutez le groupe.
                                 </p>
                             </div>
 
                             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:min-w-[430px]">
                                 <StatCard
-                                    label="Membres"
+                                    label="Étudiants"
                                     value={users.length}
                                     helper="disponibles"
                                 />
@@ -208,7 +208,7 @@ export default function Create({ users = [], logements = [] }) {
                         <div className="mb-5 flex items-center justify-between gap-4">
                             <div>
                                 <h3 className="text-xl font-black">
-                                    Membres
+                                    Étudiants
                                 </h3>
                                 <p className="text-sm text-base-content/60">
                                     {selectedUsers.length} sélectionné(s)
@@ -227,7 +227,7 @@ export default function Create({ users = [], logements = [] }) {
                                 type="text"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                placeholder="Rechercher un membre..."
+                                placeholder="Rechercher un étudiant..."
                                 className="input input-bordered w-full rounded-2xl pl-12"
                             />
                         </div>
@@ -284,8 +284,8 @@ export default function Create({ users = [], logements = [] }) {
                             ) : (
                                 <EmptyState
                                     icon={<Users className="h-7 w-7" />}
-                                    title="Aucun membre"
-                                    text="Aucun membre ne correspond à votre recherche."
+                                    title="Aucun étudiant"
+                                    text="Aucun étudiant ne correspond à votre recherche."
                                 />
                             )}
                         </div>
@@ -317,7 +317,6 @@ export default function Create({ users = [], logements = [] }) {
                                     value={selectedLogement}
                                     onChange={(e) => setSelectedLogement(e.target.value)}
                                     className="select select-bordered w-full rounded-2xl"
-                                    required
                                 >
                                     <option value="">Choisir un logement</option>
 
@@ -346,7 +345,6 @@ export default function Create({ users = [], logements = [] }) {
                                             value={dateDebut}
                                             onChange={(e) => setDateDebut(e.target.value)}
                                             className="input input-bordered w-full rounded-2xl pl-12"
-                                            required
                                         />
                                     </div>
                                 </div>
@@ -377,7 +375,7 @@ export default function Create({ users = [], logements = [] }) {
 
                                 <div className="space-y-1 text-sm text-base-content/70">
                                     <p>
-                                        Membres sélectionnés :{' '}
+                                        Étudiants sélectionnés :{' '}
                                         <span className="font-bold">
                                             {selectedUsers.length}
                                         </span>
@@ -452,7 +450,7 @@ export default function Create({ users = [], logements = [] }) {
                                                 </p>
 
                                                 <p className="text-xs text-base-content/60">
-                                                    {attr.user_ids.length} membre(s)
+                                                    {attr.user_ids.length} étudiant(s)
                                                 </p>
                                             </div>
 
@@ -467,7 +465,7 @@ export default function Create({ users = [], logements = [] }) {
 
                                         <div className="rounded-2xl bg-base-200/70 p-3">
                                             <p className="text-xs font-bold uppercase tracking-wider text-base-content/50">
-                                                Membres
+                                                Étudiants
                                             </p>
 
                                             <p className="mt-1 text-sm font-semibold">
@@ -532,13 +530,13 @@ function MemberAvatar({ user }) {
         user.image_url ||
         null;
 
-    const initial = user.name?.charAt(0)?.toUpperCase() || 'M';
+    const initial = user.name?.charAt(0)?.toUpperCase() || 'E';
 
     if (image) {
         return (
             <div className="avatar shrink-0">
                 <div className="h-10 w-10 rounded-2xl ring-1 ring-base-300">
-                    <img src={image} alt={user.name || 'Membre'} />
+                    <img src={image} alt={user.name || 'Étudiant'} />
                 </div>
             </div>
         );

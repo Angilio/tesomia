@@ -9,6 +9,8 @@ use App\Http\Controllers\LogementController;
 use App\Http\Controllers\MembreController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Models\User;
+use App\Http\Controllers\RoleManagementController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Role;
 use Inertia\Inertia;
@@ -33,11 +35,11 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    $user = Auth::user();
-    if ($user && !$user->hasRole('Commission de logement')) {
-        $user->assignRole('Commission de logement');
-    }
-    return Inertia::render('Dashboard');
+    // $user = Auth::user();
+    // if ($user && !$user->hasRole('Commission de logement')) {
+    //     $user->assignRole('Commission de logement');
+    // }
+    // return Inertia::render('Dashboard');
 })->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -57,7 +59,11 @@ Route::middleware(['auth', 'role:Président'])
         Route::get('/membres', [MembreController::class, 'index'])
             ->name('membres.index');
 
+        Route::get('/roles', [RoleManagementController::class, 'index'])
+            ->name('roles.index');
 
+        Route::put('/roles/users/{user}', [RoleManagementController::class, 'update'])
+            ->name('roles.update');
 
         Route::delete('/membres/{id}', [RegisteredUserController::class, 'deleteUser'])
             ->name('membres.destroy');

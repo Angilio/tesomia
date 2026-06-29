@@ -51,44 +51,6 @@ class TresorierController extends Controller
         ]);
     }
 
-    // public function rapports(Request $request)
-    // {
-    //     $filtre = $request->query('filtre', 'tous');
-
-    //     // Tous les utilisateurs avec leurs logements
-    //     $users = User::with('logement')->get();
-
-    //     $membres = $users->map(function ($user) {
-
-    //         // Vérifie si l'utilisateur a payé le droit annuel (ress_financiere_id = 2)
-    //         $aPaye = Entree::where('user_id', $user->id)
-    //             ->where('ress_financiere_id', 2)
-    //             ->exists();
-
-    //         return [
-    //             'id' => $user->id,
-    //             'name' => $user->name,
-    //             'adresse' => $user->logement()->name ?? 'Non attribué',
-    //             'paye' => $aPaye,
-    //         ];
-    //     });
-
-    //     // 🎯 Filtrage
-    //     if ($filtre === 'actifs') {
-    //         $membres = $membres->where('paye', true);
-    //     } elseif ($filtre === 'non_actifs') {
-    //         $membres = $membres->where('paye', false);
-    //     }
-
-    //     $totalMembres = $membres->count();
-
-    //     return Inertia::render('Tresorier/Rapports', [
-    //         'membres' => $membres->values(),
-    //         'totalMembres' => $totalMembres,
-    //         'filtre' => $filtre,
-    //     ]);
-    // }
-
     public function rapports(Request $request)
     {
         $filtre = $request->query('filtre', 'tous');
@@ -215,43 +177,7 @@ class TresorierController extends Controller
         ]);
         return back()->with('success', 'Ressource financière ajoutée avec succès.');
     }
-
-
-    // public function exportRapportPdf(Request $request)
-    // {
-    //     $filtre = $request->query('filtre', 'tous');
-
-    //     $users = User::with('logement')->get();
-
-    //     $membres = $users->map(function ($user) {
-
-    //         $aPaye = Entree::where('user_id', $user->id)
-    //             ->where('ress_financiere_id', 2)
-    //             ->exists();
-
-    //         return [
-    //             'name' => $user->name,
-    //             'adresse' => optional($user->logement->first())->name ?? 'Non attribué',
-    //             'paye' => $aPaye,
-    //         ];
-    //     });
-
-    //     if ($filtre === 'actifs') {
-    //         $membres = $membres->where('paye', true);
-    //     } elseif ($filtre === 'non_actifs') {
-    //         $membres = $membres->where('paye', false);
-    //     }
-
-    //     $totalMembres = $membres->count();
-
-    //     $pdf = Pdf::loadView('rapports.pdf', [
-    //         'membres' => $membres,
-    //         'totalMembres' => $totalMembres,
-    //     ]);
-
-    //     return $pdf->download('rapport_membres_droit_annuel.pdf');
-    // }
-
+    
     public function exportRapportPdf(Request $request)
     {
         $filtre = $request->query('filtre', 'tous');
